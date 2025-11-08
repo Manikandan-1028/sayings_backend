@@ -1,0 +1,53 @@
+# POST http://localhost:8000/api/auth/login
+# Content-Type: application/json
+
+# {
+#     "username":"bobby",
+#     "password":"bobby123" 
+# }
+
+# GET http://localhost:8000/api/post/feed
+# DELETE http://localhost:8000/api/auth/logout
+
+
+# POST http://localhost:8000/api/post/create
+# Content-Type:application/json
+
+# {
+#     "bookName":"Shadow of wind",
+#     "bookImg":"shadowofwind",
+#     "message":"A classic Story...",
+#     "author":"Morgan"
+# }
+
+POST http://localhost:8000/api/post/comment/6852eefbef0a5a50eb8707e9
+Content-Type: application/json
+
+{
+    "text":"I read it too...he is my "
+}
+
+# POST http://localhost:8000/api/auth/signup
+# Content-Type: application/json
+
+# {
+#     "username":"vikram",
+#     "email":"vikram@gmail.com",
+#     "password":"vikram123"
+# }
+
+# GET http://localhost:8000/api/people/suggestedpeople
+
+# GET http://localhost:8000/api/people/search/vikram
+
+# POST http://localhost:8000/api/post/createshelf
+# Content-Type: application/json
+
+# {
+#     "bookImg":"none",
+#     "bookName":"Hitler"
+# }
+
+# GET http://localhost:8000/api/post/shelf
+
+# GET http://localhost:8000/api/auth/me
