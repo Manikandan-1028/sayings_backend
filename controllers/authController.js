@@ -51,103 +51,42 @@ const generateToken  = require('../utils/generateToken')
 //         res.status(400).json("internal server error",err)
 //     }
 // }
-const signUp = async (req, res) => {
-  try {
-    const { username, email, password } = req.body;
-
-    // Email validation
-    const emailValidation = /^[^\$@]+@[^\$@]+\.[^\$@]+$/;
-    if (!emailValidation.test(email)) {
-      return res.status(400).json({ error: "invalid email" }); // return here!
-    }
-
-    // Check if user/email exists
-    const userExists = await User.findOne({ username });
-    const emailExists = await User.findOne({ email });
-
-    if (userExists || emailExists) {
-      return res.status(400).json("username or email already exists");
-    }
-
-    // Password length validation
-    if (password.length < 6) {
-      return res.status(400).json("password should have at least 6 characters");
-    }
-
-    // Hash password
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-
-    // Create new user
-    const newUser = new User({
-      username,
-      email,
-      password: hashedPassword,
-    });
-
-    // Save user to DB first
-    await newUser.save();
-
-    // Generate token
-    const token = generateToken(newUser._id); // Modified generateToken to return token
-
-    // Send response with cookie and token
-    res.cookie("jwt", token, {
-      maxAge: 14 * 24 * 60 * 60 * 1000,
-      httpOnly: true,
-      sameSite: "strict",
-    });
-
-    res.status(200).json({
-      message: "User created successfully",
-      user: {
-        _id: newUser._id,
-        username: newUser.username,
-        email: newUser.email,
-      },
-      token,
-    });
-  } catch (err) {
-    console.log("error in signup controller", err);
-    res.status(500).json({ error: "internal server error" });
-  }
-};
 
 
-const login = async (req, res) => {
-  try {
-    const { username, password } = req.body;
+// const login = async (req, res) => {
+//   try {
+//     const { username, password } = req.body;
 
-    // Find user by username
-    const user = await User.findOne({ username });
-    if (!user) {
-      return res.status(400).json({ message: "Username or password is incorrect" });
-    }
+//     // Find user by username
+//     const user = await User.findOne({ username });
+//     if (!user) {
+//       return res.status(400).json({ message: "Username or password is incorrect" });
+//     }
 
-    // Compare password
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      return res.status(400).json({ message: "Username or password is incorrect" });
-    }
+//     // Compare password
+//     const isMatch = await bcrypt.compare(password, user.password);
+//     if (!isMatch) {
+//       return res.status(400).json({ message: "Username or password is incorrect" });
+//     }
 
    
-    const token = generateToken(user._id, res);
+//     const token = generateToken(user._id, res);
 
-    // ✅ Send both user info and token in response
-    return res.status(200).json({
-      message: "Login successful",
-      token, // <-- added here
-      user: {
-        _id: user._id,
-        username: user.username,
-        email: user.email,
-      },
-    });
-  } catch (error) {
-    console.error("Error in login:", error.message);
-    return res.status(500).json({ message: "Error in login controller" });
-  }
-};
+//     // ✅ Send both user info and token in response
+//     return res.status(200).json({
+//       message: "Login successful",
+//       token, // <-- added here
+//       user: {
+//         _id: user._id,
+//         username: user.username,
+//         email: user.email,
+//       },
+//     });
+//   } catch (error) {
+//     console.error("Error in login:", error.message);
+//     return res.status(500).json({ message: "Error in login controller" });
+//   }
+// };
 
 
 
@@ -172,6 +111,99 @@ const login = async (req, res) => {
 //         res.status(400).json("error in login controller")
 //     }
 // }
+
+
+const signUp = async (req, res) => {
+    try {
+        const { username, email, password } = req.body;
+
+        // Email validation
+        const emailValidation = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailValidation.test(email)) {
+            return res.status(400).json({ error: "Invalid email" }); 
+        }
+
+        // Check for existing username/email
+        const userExists = await User.findOne({ username });
+        const emailExists = await User.findOne({ email });
+        if (userExists || emailExists) {
+            return res.status(400).json({ error: "Username or email already exists" });
+        }
+
+        // Password length check
+        if (password.length < 6) {
+            return res.status(400).json({ error: "Password should have at least 6 characters" });
+        }
+
+        // Hash password
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        const newUser = new User({
+            username,
+            email,
+            password: hashedPassword
+        });
+
+        await newUser.save();
+
+      
+        const token = generateToken(newUser._id, res);
+
+       
+        return res.status(201).json({
+            message: "User created successfully",
+           
+            user: {
+                _id: newUser._id,
+                username: newUser.username,
+                email: newUser.email
+            }
+        });
+
+    } catch (err) {
+        console.error("Error in signup controller:", err);
+        return res.status(500).json({ error: "Internal server error" });
+    }
+};
+
+
+const login = async (req, res) => {
+    try {
+        const { username, password } = req.body;
+
+        // Find user
+        const user = await User.findOne({ username });
+        if (!user) {
+            return res.status(400).json({ message: "Username or password is incorrect" });
+        }
+
+        // Compare password
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(400).json({ message: "Username or password is incorrect" });
+        }
+
+        // Generate token (sets cookie internally)
+        const token = generateToken(user._id, res);
+
+        // Send response
+        return res.status(200).json({
+            message: "Login successful",
+            token,
+            user: {
+                _id: user._id,
+                username: user.username,
+                email: user.email
+            }
+        });
+
+    } catch (error) {
+        console.error("Error in login controller:", error);
+        return res.status(500).json({ message: "Internal server error" });
+    }
+};
+
+
 
 const logOut = async(req,res)=>{
     try{
