@@ -46,6 +46,8 @@ const User = require('../models/userModel')
 
 // }
 
+// import jwt from "jsonwebtoken";
+// import User from "../models/userModel.js";
 
 const protectedRoute = async (req, res, next) => {
   const header = req.headers["authorization"];
@@ -57,15 +59,42 @@ const protectedRoute = async (req, res, next) => {
   const token = header.split(" ")[1];
 
   try {
- 
-    const user = jwt.verify(token, process.env.SECRET_KEY);
+    const decoded = jwt.verify(token, process.env.SECRET_KEY);
+    const user = await User.findById(decoded.userId).select("-password");
 
-    req.user = user;
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    req.user = user; // now has _id, name, email, etc.
     next();
   } catch (err) {
     return res.status(401).json({ message: "Invalid token" });
   }
 };
+
+// export default protectedRoute;
+
+
+// const protectedRoute = async (req, res, next) => {
+//   const header = req.headers["authorization"];
+
+//   if (!header || !header.startsWith("Bearer ")) {
+//     return res.status(401).json({ message: "Access token missing or malformed" });
+//   }
+
+//   const token = header.split(" ")[1];
+
+//   try {
+ 
+//     const user = jwt.verify(token, process.env.SECRET_KEY);
+
+//     req.user = user;
+//     next();
+//   } catch (err) {
+//     return res.status(401).json({ message: "Invalid token" });
+//   }
+// };
 
 
 

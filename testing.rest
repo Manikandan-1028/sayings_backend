@@ -7,10 +7,38 @@
 # }
 
 # GET http://localhost:8000/api/post/feed
+
+
+# GET http://localhost:8000/api/post/feed
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTEwMmRlOGUzNDA2ZTA2ZDc2NGI5NTciLCJpYXQiOjE3NjI2NjkxNzksImV4cCI6MTc2Mzg3ODc3OX0.D9YR6v-mb00UjYQF6a3igN7dPHurqE2wJF4-uf3wfTQ
 # DELETE http://localhost:8000/api/auth/logout
+
+# POST http://localhost:8000/api/post/create
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTEwMjg2NTMxMzU0MmRjY2I4YTIxMmMiLCJpYXQiOjE3NjI2Njc0NzksImV4cCI6MTc2Mzg3NzA3OX0.j21T1aJ1SwatmdIpqHOy7m8XjeqsFTo62YyIte4WXws
+# Content-Type: application/json
+
+# {
+#   "bookName": "Shadow of wind",
+#   "bookImg": "shadowofwind",
+#   "message": "A classic story...",
+#   "author": "Morgan"
+# }
 
 
 # POST http://localhost:8000/api/post/create
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTEwMjg2NTMxMzU0MmRjY2I4YTIxMmMiLCJpYXQiOjE3NjI2Njc0NzksImV4cCI6MTc2Mzg3NzA3OX0.j21T1aJ1SwatmdIpqHOy7m8XjeqsFTo62YyIte4WXws
+# Content-Type: application/json
+
+# {
+#   "bookName": "Green lights",
+#   "bookImg": "greenlights",
+#   "message": "A great read...",
+#   "author": "maathew"
+# }
+
+
+# POST http://localhost:8000/api/post/create
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTEwMjg2NTMxMzU0MmRjY2I4YTIxMmMiLCJpYXQiOjE3NjI2NjY2NjIsImV4cCI6MTc2Mzg3NjI2Mn0.LWgkHrXWixfwlzz07e6TTvyJM8zrbl-Hlyw_RFouylA
 # Content-Type:application/json
 
 # {
@@ -20,20 +48,20 @@
 #     "author":"Morgan"
 # }
 
-POST http://localhost:8000/api/post/comment/6852eefbef0a5a50eb8707e9
-Content-Type: application/json
+# POST http://localhost:8000/api/post/comment/6852eefbef0a5a50eb8707e9
+# Content-Type: application/json
 
-{
-    "text":"I read it too...he is my "
-}
+# {
+#     "text":"I read it too...he is my "
+# }
 
 # POST http://localhost:8000/api/auth/signup
 # Content-Type: application/json
 
 # {
-#     "username":"vikram",
-#     "email":"vikram@gmail.com",
-#     "password":"vikram123"
+#     "username":"bobby",
+#     "email":"bobby@gmail.com",
+#     "password":"bobby123"
 # }
 
 # GET http://localhost:8000/api/people/suggestedpeople

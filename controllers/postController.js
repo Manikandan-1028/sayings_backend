@@ -3,21 +3,53 @@ const Post = require("../models/postModel")
 const User = require('../models/userModel')
 const Shelf = require('../models/shelfModel')
 
+// const allPosts = async (req, res) => {
+//     try {
+//         const post = await Post.find().populate("userId").select("-password");
+
+//         if (!post) {
+//             res.status(200).json("no post found")
+//         }
+
+//         res.status(200).json({
+//             message:"success",
+//             data:{
+//                 post
+//             }
+//         })
+//     }
+//     catch (err) {
+//         console.log("error in all post controller",err.message)
+//         res.status(400).json("internal server error")
+//     }
+// }
 const allPosts = async (req, res) => {
-    try {
-        const post = await Post.find().populate("userId")
+  try {
+    const posts = await Post.find()
+      .populate("userId", "-password") // populate user but exclude password
+      .lean();
 
-        if (!post) {
-            res.status(200).json("no post found")
-        }
+    if (!posts || posts.length === 0) {
+      return res.status(200).json({
+        message: "No posts found",
+        data: [],
+      });
+    }
 
-        res.status(200).json(post)
-    }
-    catch (err) {
-        console.log("error in all post controller",err.message)
-        res.status(400).json("internal server error")
-    }
-}
+    return res.status(200).json({
+      message: "Success",
+      data: posts,
+    });
+  } catch (err) {
+    console.error("Error in allPosts controller:", err.message);
+    return res.status(500).json({
+      message: "Internal server error",
+      error: err.message,
+    });
+  }
+};
+
+
 
 const createPost = async (req, res) => {
     try {
