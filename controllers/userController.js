@@ -3,7 +3,7 @@ const User = require('../models/userModel')
 const Suggestedpeople=async(req,res)=>{
     try{
         const userId = req.user._id;
-        const users = await User.aggregate([{$match:{_id:{$ne:userId}}},{$sample:{size:10}}])
+        const users = await User.aggregate([{$match:{_id:{$ne:userId}}},{$sample:{size:10}}, { $project: { password: 0 } }])
 
         res.status(200).json(users)
 

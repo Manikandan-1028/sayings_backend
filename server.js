@@ -45,7 +45,7 @@ app.use('/api/people',userRoute)
 
 app.listen(8000, () => {
     console.log("server listening in 8000")
-    mongoose.connect("mongodb://127.0.0.1:27017/shelf")
+    mongoose.connect(process.env.MONGO_URL)
 
         .then(() => {
             console.log("database connected")

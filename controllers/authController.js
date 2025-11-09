@@ -69,7 +69,7 @@ const login = async (req, res) => {
       return res.status(400).json({ message: "Username or password is incorrect" });
     }
 
-    // Generate token (and set cookie)
+   
     const token = generateToken(user._id, res);
 
     // ✅ Send both user info and token in response

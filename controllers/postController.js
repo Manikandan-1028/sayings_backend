@@ -23,6 +23,8 @@ const Shelf = require('../models/shelfModel')
 //         res.status(400).json("internal server error")
 //     }
 // }
+
+
 const allPosts = async (req, res) => {
   try {
     const posts = await Post.find()
